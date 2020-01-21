@@ -158,6 +158,7 @@ class Graph:
 
         for neighbor_vert in self.vertices[starting_vertex]:
             if neighbor_vert not in visited:
+                # return self.dfs_recursive(neighbor_vert, target_value, visited, path)
                 new_path = self.dfs_recursive(neighbor_vert, target_value, visited, path)
                 if new_path:
                     return new_path
