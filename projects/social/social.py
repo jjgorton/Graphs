@@ -1,3 +1,5 @@
+import random
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -43,10 +45,40 @@ class SocialGraph:
         self.users = {}
         self.friendships = {}
         # !!!! IMPLEMENT ME
+        def name_generator(length):
+            consonants = list('bcdfghjklmnpqrstvwxyz')
+            vowels = list('aeiou')
+            name = ''
+
+            for l in range(length):
+                if random.randint(0, 100) % 2 == 0:
+                    letter = consonants[random.randint(0, 20)]
+                else:
+                    letter = vowels[random.randint(0,4)]
+                
+                if l == 0:
+                    name += letter.upper()
+                else:
+                    name += letter
+
+            return name
+
 
         # Add users
+        while len(self.users) < num_users:
+            self.add_user(name_generator(random.randint(0,6)))
 
         # Create friendships
+        friends_count = 0
+        while friends_count/num_users <= avg_friendships:
+            user = random.randint(1, num_users // 2)
+            friend = random.randint(num_users // 2, num_users)
+
+            if friend in self.friendships[user]:
+                continue
+            else:
+                self.add_friendship(user, friend)
+                friends_count += 2
 
     def get_all_social_paths(self, user_id):
         """
@@ -65,6 +97,6 @@ class SocialGraph:
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
-    print(sg.friendships)
+    print(f'\ngraph:\n{sg.friendships}\n')
     connections = sg.get_all_social_paths(1)
     print(connections)
